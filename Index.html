@@ -5,29 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newsletter Marketing</title>
     <style>
-        /* Variables de diseño por defecto (se sobreescriben con Google Sheets) */
+        /* Variables por defecto */
         :root {
             --blue-main: #007BFF;
             --dark-bg: #1a1a1a;
             --white: #ffffff;
         }
 
+        /* Reset básico y fondo */
         body {
             font-family: 'Arial Black', sans-serif;
-            background-color: #f0f0f0; /* Fondo por defecto */
+            background-color: #f0f0f0;
             margin: 0;
             display: flex;
             justify-content: center;
-            padding: 20px;
+            padding: 10px; /* Margen para celulares */
+            box-sizing: border-box;
         }
 
-        /* Contenedor Principal Adaptable */
+        /* Contenedor principal adaptable */
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 500px; /* En PC no pasará de este ancho */
             background-color: var(--white);
             border: 8px solid var(--blue-main);
             box-sizing: border-box;
+            overflow: hidden; /* Evita que el contenido se salga de la caja */
         }
 
         /* Cabecera */
@@ -36,104 +39,103 @@
             color: white;
             padding: 20px;
             text-align: left;
+            word-wrap: break-word; /* Evita que títulos largos rompan el diseño */
         }
 
         .header h1 { 
             margin: 0; 
-            font-size: 45px; 
-            letter-spacing: -2px; 
+            font-size: clamp(30px, 8vw, 45px); /* Se achica solo si la pantalla es pequeña */
+            letter-spacing: -1px; 
             text-transform: uppercase;
+            line-height: 1;
         }
         
         .header h2 { 
-            margin: 0; 
-            font-size: 35px; 
+            margin: 5px 0 0 0; 
+            font-size: clamp(20px, 6vw, 35px); 
             font-weight: normal; 
             text-transform: uppercase;
         }
 
-        /* Divisores de Sección */
+        /* Divisores (Cintas negras) */
         .divider-dots {
             background-color: var(--dark-bg);
             color: white;
             text-align: center;
-            padding: 10px;
-            font-size: 16px;
+            padding: 10px 5px;
+            font-size: clamp(12px, 4vw, 16px);
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         /* Contenedor de cada bloque */
         .section-content { 
-            padding: 20px; 
+            padding: 15px; 
             min-height: 20px; 
         }
 
         /* Diseño de Píldoras (Porcentajes) */
         .item-row {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             margin-bottom: 12px;
-            background: #eee;
+            background: #f4f4f4;
             border-radius: 30px;
             overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra suave para destacar */
         }
 
         .label-pill {
-            padding: 15px 25px;
+            padding: 12px 15px;
             color: white;
-            width: 60%;
+            width: 55%;
             border-radius: 0 30px 30px 0;
             text-transform: uppercase;
-            font-size: 13px;
+            font-size: clamp(10px, 3vw, 13px);
             display: flex;
             align-items: center;
+            font-weight: bold;
         }
 
         .value-text {
-            width: 40%;
+            width: 45%;
             text-align: center;
-            font-size: 14px;
+            font-size: clamp(11px, 3.5vw, 14px);
             color: #333;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
         }
 
         /* Diseño de Cuadros (Textos Largos) */
         .info-box {
             border: 2px solid;
             margin-top: 15px;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
         }
 
         .info-box h4 { 
             margin: 0; 
             text-transform: uppercase; 
+            font-size: clamp(12px, 3.5vw, 16px);
         }
         
         .info-box p { 
             margin: 5px 0 0 0; 
-            font-size: 12px; 
-            font-family: sans-serif; 
+            font-size: clamp(10px, 3vw, 12px);
+            font-family: Arial, Helvetica, sans-serif; /* Fuente más legible para textos largos */
             font-weight: bold; 
-            line-height: 1.2; 
+            line-height: 1.3; 
         }
 
-        /* Ajustes para Celulares (Responsive) */
-        @media (max-width: 480px) {
-            .header h1 { font-size: 35px; }
-            .header h2 { font-size: 25px; }
-            
-            .label-pill { 
-                width: 50%; 
-                font-size: 11px; 
-                padding: 10px; 
-            }
-            
-            .value-text { 
-                width: 50%; 
-                font-size: 12px; 
-            }
+        /* Ajustes específicos para celulares muy pequeños */
+        @media (max-width: 360px) {
+            .item-row { flex-direction: column; border-radius: 10px; }
+            .label-pill { width: 100%; border-radius: 10px 10px 0 0; text-align: center; justify-content: center; }
+            .value-text { width: 100%; padding: 10px 0; }
         }
     </style>
 </head>
@@ -145,7 +147,7 @@
         <h2 id="sub-title">---</h2>
     </div>
 
-    <div class="divider-dots">✦ ✦ ✦ PROGRAMA DE MERCADO ✦ ✦ ✦</div>
+    <div class="divider-dots">✦ ✦ PROGRAMA DE MERCADO ✦ ✦</div>
     <div class="section-content" id="content-programa">
         </div>
 
@@ -155,19 +157,19 @@
 </div>
 
 <script>
-    // IMPORTANTE: Reemplaza esto con la URL de tu Apps Script (la que termina en /exec)
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw65sEdKZmLCnR9fYjuawnZnLTWfCkgFHn4hcJsdvCU2Yan_98hO8EHOP3THe-1jWDX/exec';
+    // PEGA AQUÍ TU URL DE APPS SCRIPT
+    const WEB_APP_URL = 'TU_URL_DE_APPS_SCRIPT_AQUI';
 
     async function init() {
         try {
             const res = await fetch(WEB_APP_URL);
             const data = await res.json();
 
-            // 1. Aplicar Configuración General (Títulos)
-            document.getElementById('main-title').innerText = data.config.TITULO_PRINCIPAL;
-            document.getElementById('sub-title').innerText = data.config.SUBTITULO_FECHA;
+            // 1. Textos Generales
+            document.getElementById('main-title').innerText = data.config.TITULO_PRINCIPAL || "RESUMEN";
+            document.getElementById('sub-title').innerText = data.config.SUBTITULO_FECHA || "";
 
-            // 2. Aplicar Diseño desde Sheets
+            // 2. Colores Dinámicos
             if(data.config.COLOR_BORDE_Y_HEADER) {
                 document.documentElement.style.setProperty('--blue-main', data.config.COLOR_BORDE_Y_HEADER);
             }
@@ -178,7 +180,7 @@
                 document.body.style.backgroundColor = data.config.COLOR_FONDO_PAGINA;
             }
 
-            // 3. Limpiar y Renderizar Contenido
+            // 3. Renderizar Contenido
             const programaDiv = document.getElementById('content-programa');
             const ligaDiv = document.getElementById('content-liga');
             programaDiv.innerHTML = "";
@@ -187,7 +189,6 @@
             data.content.forEach(item => {
                 let container = (item.seccion === 'PROGRAMA DE MERCADO') ? programaDiv : ligaDiv;
                 
-                // Si el valor no tiene % o es más largo de 40 caracteres, usamos el "Cuadro"
                 if (!item.valor.includes('%') || item.valor.length > 40) {
                     container.innerHTML += `
                         <div class="info-box" style="border-color: ${item.color}">
@@ -195,7 +196,6 @@
                             <p>${item.valor}</p>
                         </div>`;
                 } else {
-                    // Si es un porcentaje corto, usamos la "Píldora"
                     container.innerHTML += `
                         <div class="item-row">
                             <div class="label-pill" style="background-color: ${item.color}">${item.etiqueta}</div>
@@ -204,13 +204,12 @@
                 }
             });
         } catch (err) {
-            console.error("Error al cargar los datos de Sheets:", err);
-            document.getElementById('main-title').innerText = "ERROR DE CONEXIÓN";
-            document.getElementById('sub-title').innerText = "Revisa la consola";
+            console.error("Error cargando datos:", err);
+            document.getElementById('main-title').innerText = "ERROR";
+            document.getElementById('sub-title').innerText = "Verifica la conexión";
         }
     }
 
-    // Iniciar la carga
     init();
 </script>
 </body>

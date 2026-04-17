@@ -19,40 +19,42 @@
             margin: 0;
             display: flex;
             justify-content: center;
-            padding: 10px; /* Margen para celulares */
+            padding: 2vw; /* Margen dinámico basado en el ancho de pantalla */
             box-sizing: border-box;
         }
 
-        /* Contenedor principal adaptable */
+        /* Contenedor principal - AHORA ADAPTADO PARA PC */
         .container {
             width: 100%;
-            max-width: 500px; /* En PC no pasará de este ancho */
+            max-width: 900px; /* Aumentado de 500px a 900px para aprovechar monitores de PC */
             background-color: var(--white);
             border: 8px solid var(--blue-main);
             box-sizing: border-box;
-            overflow: hidden; /* Evita que el contenido se salga de la caja */
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Sombra para darle profundidad en PC */
         }
 
         /* Cabecera */
         .header {
             background-color: var(--blue-main);
             color: white;
-            padding: 20px;
+            padding: 30px 40px; /* Más espacio interior en PC */
             text-align: left;
-            word-wrap: break-word; /* Evita que títulos largos rompan el diseño */
+            word-wrap: break-word;
         }
 
         .header h1 { 
             margin: 0; 
-            font-size: clamp(30px, 8vw, 45px); /* Se achica solo si la pantalla es pequeña */
+            /* El texto se adapta: Mínimo 30px en celular, Máximo 60px en PC */
+            font-size: clamp(30px, 6vw, 60px); 
             letter-spacing: -1px; 
             text-transform: uppercase;
-            line-height: 1;
+            line-height: 1.1;
         }
         
         .header h2 { 
             margin: 5px 0 0 0; 
-            font-size: clamp(20px, 6vw, 35px); 
+            font-size: clamp(20px, 4vw, 40px); 
             font-weight: normal; 
             text-transform: uppercase;
         }
@@ -62,15 +64,15 @@
             background-color: var(--dark-bg);
             color: white;
             text-align: center;
-            padding: 10px 5px;
-            font-size: clamp(12px, 4vw, 16px);
-            letter-spacing: 2px;
+            padding: 15px 5px;
+            font-size: clamp(14px, 2.5vw, 20px);
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
 
         /* Contenedor de cada bloque */
         .section-content { 
-            padding: 15px; 
+            padding: 25px 40px; /* Más padding lateral para que respire en PC */
             min-height: 20px; 
         }
 
@@ -78,64 +80,80 @@
         .item-row {
             display: flex;
             align-items: stretch;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             background: #f4f4f4;
-            border-radius: 30px;
+            border-radius: 40px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra suave para destacar */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s; /* Pequeño efecto al pasar el mouse en PC */
+        }
+
+        .item-row:hover {
+            transform: scale(1.01);
         }
 
         .label-pill {
-            padding: 12px 15px;
+            padding: 15px 20px;
             color: white;
-            width: 55%;
-            border-radius: 0 30px 30px 0;
+            width: 45%; /* Reducido para dar más espacio al texto en PC */
+            border-radius: 0 40px 40px 0;
             text-transform: uppercase;
-            font-size: clamp(10px, 3vw, 13px);
+            font-size: clamp(12px, 2vw, 16px);
             display: flex;
             align-items: center;
             font-weight: bold;
         }
 
         .value-text {
-            width: 45%;
+            width: 55%;
             text-align: center;
-            font-size: clamp(11px, 3.5vw, 14px);
+            font-size: clamp(14px, 2.5vw, 18px);
             color: #333;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 5px;
+            padding: 10px;
         }
 
         /* Diseño de Cuadros (Textos Largos) */
         .info-box {
-            border: 2px solid;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 5px;
+            border: 3px solid;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fafafa;
         }
 
         .info-box h4 { 
             margin: 0; 
             text-transform: uppercase; 
-            font-size: clamp(12px, 3.5vw, 16px);
+            font-size: clamp(14px, 2.5vw, 20px);
         }
         
         .info-box p { 
-            margin: 5px 0 0 0; 
-            font-size: clamp(10px, 3vw, 12px);
-            font-family: Arial, Helvetica, sans-serif; /* Fuente más legible para textos largos */
+            margin: 10px 0 0 0; 
+            font-size: clamp(12px, 2vw, 16px);
+            font-family: Arial, Helvetica, sans-serif;
             font-weight: bold; 
-            line-height: 1.3; 
+            line-height: 1.5; 
         }
 
-        /* Ajustes específicos para celulares muy pequeños */
-        @media (max-width: 360px) {
+        /* Ajustes específicos para celulares (Responsive) */
+        @media (max-width: 600px) {
+            body { padding: 0; } /* Quitamos margen exterior en celulares */
+            .container { border-width: 4px; border-radius: 0; } /* Borde más fino */
+            .header { padding: 20px; }
+            .section-content { padding: 15px; }
+            .label-pill { width: 50%; padding: 12px 10px; font-size: 11px; }
+            .value-text { width: 50%; font-size: 13px; }
+        }
+
+        /* Ajustes extremos para pantallas muy angostas */
+        @media (max-width: 380px) {
             .item-row { flex-direction: column; border-radius: 10px; }
             .label-pill { width: 100%; border-radius: 10px 10px 0 0; text-align: center; justify-content: center; }
-            .value-text { width: 100%; padding: 10px 0; }
+            .value-text { width: 100%; padding: 15px 0; }
         }
     </style>
 </head>
@@ -157,7 +175,7 @@
 </div>
 
 <script>
-    // PEGA AQUÍ TU URL DE APPS SCRIPT
+    // IMPORTANTE: REEMPLAZA ESTO CON TU URL DE APPS SCRIPT
     const WEB_APP_URL = 'TU_URL_DE_APPS_SCRIPT_AQUI';
 
     async function init() {

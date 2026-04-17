@@ -124,32 +124,43 @@
 <script>
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw65sEdKZmLCnR9fYjuawnZnLTWfCkgFHn4hcJsdvCU2Yan_98hO8EHOP3THe-1jWDX/exec';
 
-    async function loadData() {
+   async function loadData() {
+    try {
         const response = await fetch(WEB_APP_URL);
         const data = await response.json();
         
         const programaDiv = document.getElementById('content-programa');
         const ligaDiv = document.getElementById('content-liga');
 
+        // Limpiamos los contenedores por si acaso
+        programaDiv.innerHTML = "";
+        ligaDiv.innerHTML = "";
+
         data.forEach(item => {
-            if(item.seccion === 'PROGRAMA DE MERCADO') {
-                // Si es un item con barra de porcentaje (como Adheridos)
-                if(item.valor.includes('%')) {
-                    programaDiv.innerHTML += `
-                        <div class="item-row">
-                            <div class="label-pill" style="background-color: ${item.color}">${item.etiqueta}</div>
-                            <div class="value-text">${item.valor}</div>
-                        </div>`;
-                } else {
-                    // Si es un cuadro de texto (como Cerveza)
-                    programaDiv.innerHTML += `
-                        <div class="info-box" style="border-color: ${item.color}">
-                            <h4 style="color: ${item.color}">${item.etiqueta}</h4>
-                            <p>${item.valor}</p>
-                        </div>`;
-                }
-            }
+            // Decidimos en qué sección va
+            let container = (item.seccion === 'PROGRAMA DE MERCADO') ? programaDiv : ligaDiv;
             
+            // Decidimos el diseño: ¿Es una métrica o un párrafo de texto?
+            // Si el texto es largo (> 50 caracteres) o no tiene %, usamos el formato "cuadro"
+            if (item.valor.length > 50 || !item.valor.includes('%')) {
+                container.innerHTML += `
+                    <div class="info-box" style="border-color: ${item.color}">
+                        <h4 style="color: ${item.color}">${item.etiqueta}</h4>
+                        <p>${item.valor}</p>
+                    </div>`;
+            } else {
+                // Si es corto y tiene %, usamos el formato "píldora"
+                container.innerHTML += `
+                    <div class="item-row">
+                        <div class="label-pill" style="background-color: ${item.color}">${item.etiqueta}</div>
+                        <div class="value-text">${item.valor}</div>
+                    </div>`;
+            }
+        });
+    } catch (e) {
+        console.error("Error cargando datos:", e);
+    }
+}           
             if(item.seccion === 'LIGA DE EJECUCION') {
                 ligaDiv.innerHTML += `<div class="item-row">
                     <div class="label-pill" style="background-color: ${item.color}">${item.etiqueta}</div>

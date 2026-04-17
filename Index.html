@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Marketing</title>
+    <style>
+        :root {
+            --blue-main: #007BFF;
+            --dark-bg: #1a1a1a;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 500px;
+            background-color: var(--white);
+            border: 8px solid var(--blue-main);
+        }
+
+        /* Header Estilo Imagen */
+        .header {
+            background-color: var(--blue-main);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .header h1 { margin: 0; font-size: 45px; letter-spacing: -2px; }
+        .header h2 { margin: 0; font-size: 35px; font-weight: normal; }
+
+        .divider-dots {
+            background-color: var(--dark-bg);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Bloques de Datos */
+        .section-content { padding: 20px; }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            background: #eee;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .label-pill {
+            padding: 15px 25px;
+            color: white;
+            width: 60%;
+            border-radius: 0 30px 30px 0;
+            text-transform: uppercase;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .value-text {
+            width: 40%;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Cuadros de Texto (Cerveza / Aguas) */
+        .info-box {
+            border: 2px solid #FFB800;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .info-box h4 { margin: 0; color: #FFB800; text-transform: uppercase; }
+        .info-box p { margin: 5px 0 0 0; font-size: 11px; font-family: sans-serif; font-weight: bold; line-height: 1.2; }
+
+        .footer-banner {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="newsletter">
+    <div class="header">
+        <h1>RESUMEN</h1>
+        <h2>ABRIL 2026</h2>
+    </div>
+
+    <div class="divider-dots">✦ ✦ ✦ PROGRAMA DE MERCADO ✦ ✦ ✦</div>
+
+    <div class="section-content" id="content-programa">
+        </div>
+
+    <div class="footer-banner">
+        ⚽ LIGA DE EJECUCIÓN ⚽
+    </div>
+    
+    <div class="section-content" id="content-liga">
+        </div>
+</div>
+
+<script>
+    const WEB_APP_URL = 'TU_URL_DE_APPS_SCRIPT_AQUI';
+
+    async function loadData() {
+        const response = await fetch(WEB_APP_URL);
+        const data = await response.json();
+        
+        const programaDiv = document.getElementById('content-programa');
+        const ligaDiv = document.getElementById('content-liga');
+
+        data.forEach(item => {
+            if(item.seccion === 'PROGRAMA DE MERCADO') {
+                // Si es un item con barra de porcentaje (como Adheridos)
+                if(item.valor.includes('%')) {
+                    programaDiv.innerHTML += `
+                        <div class="item-row">
+                            <div class="label-pill" style="background-color: ${item.color}">${item.etiqueta}</div>
+                            <div class="value-text">${item.valor}</div>
+                        </div>`;
+                } else {
+                    // Si es un cuadro de texto (como Cerveza)
+                    programaDiv.innerHTML += `
+                        <div class="info-box" style="border-color: ${item.color}">
+                            <h4 style="color: ${item.color}">${item.etiqueta}</h4>
+                            <p>${item.valor}</p>
+                        </div>`;
+                }
+            }
+            
+            if(item.seccion === 'LIGA DE EJECUCION') {
+                ligaDiv.innerHTML += `<div class="item-row">
+                    <div class="label-pill" style="background-color: ${item.color}">${item.etiqueta}</div>
+                    <div class="value-text">${item.valor}</div>
+                </div>`;
+            }
+        });
+    }
+
+    loadData();
+</script>
+</body>
+</html>
